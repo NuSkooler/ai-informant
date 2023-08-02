@@ -18,7 +18,7 @@ struct Cli {
     stream: bool,
 
     /// The user representing the query
-    #[clap(long, default_value="cli-user")]
+    #[clap(long, default_value="NuSkooler")]
     user: String,
 
     /// OpenAI key
@@ -40,9 +40,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     if cli.stream == true {
+        let sys = ChatCompletionMessageRequestBuilder::default().role(Role::Assistant).name("Kisin").content("You are Kisin, the skeletal death god, creator of the underworld. You speak in English, with fragments of Mayan mixed in. You are a ever present, yet invisible host on the system a user is logging into.").build()?;
+
         let req = CreateChatRequestBuilder::default()
             .model("gpt-3.5-turbo")
-            .messages(vec![ChatCompletionMessageRequestBuilder::default()
+            .messages(vec![sys, ChatCompletionMessageRequestBuilder::default()
                 .role(Role::System)
                 .name(cli.user)
                 .content(cli.prompt)
